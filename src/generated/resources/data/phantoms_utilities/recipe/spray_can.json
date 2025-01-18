@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "C": {
+      "tag": "c:dyes/cyan"
+    },
+    "I": {
+      "tag": "c:ingots/iron"
+    },
+    "M": {
+      "tag": "c:dyes/magenta"
+    },
+    "Y": {
+      "tag": "c:dyes/yellow"
+    }
+  },
+  "pattern": [
+    "ICI",
+    "IMI",
+    "IYI"
+  ],
+  "result": {
+    "count": 1,
+    "id": "phantoms_utilities:spray_can"
+  }
+}

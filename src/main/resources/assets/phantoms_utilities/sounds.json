@@ -1,0 +1,8 @@
+{
+  "spray_can.shake": {
+    "sounds": ["phantoms_utilities:spray_can_shake"]
+  },
+  "spray_can.spray": {
+    "sounds": ["phantoms_utilities:spray_can_spray"]
+  }
+}
