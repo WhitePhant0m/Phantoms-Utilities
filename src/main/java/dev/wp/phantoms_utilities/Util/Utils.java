@@ -2,7 +2,10 @@ package dev.wp.phantoms_utilities.Util;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
+//import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
+//import net.minecraft.world.item.Item;
+//import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.Property;
@@ -10,13 +13,19 @@ import net.neoforged.fml.ModList;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.level.BlockEvent;
 
+//import java.util.ArrayList;
+//import java.util.List;
 import java.util.Set;
+//import java.util.function.BiFunction;
+//import java.util.function.Predicate;
+//import java.util.function.Supplier;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public final class Utils {
     public final static boolean isAE2Loaded = isModLoaded("ae2");
+    public final static boolean isCuriosLoaded = isModLoaded("curios");
 
     public static boolean isModLoaded(String modId) {
         return ModList.get().isLoaded(modId);
@@ -52,4 +61,13 @@ public final class Utils {
         if (newState.hasProperty(property)) return newState.setValue(property, oldState.getValue(property));
         return newState;
     }
+
+//    public static final List<BiFunction<Player, Predicate<ItemStack>, Boolean>> curioResolvers = new ArrayList<>();
+//
+//    public static boolean hasCurio(Entity entity, Supplier<Item> item) {
+//        if (entity instanceof Player player) {
+//            return curioResolvers.stream().anyMatch(resolver -> resolver.apply(player, stack -> stack.is(item.get())));
+//        }
+//        return false;
+//    }
 }

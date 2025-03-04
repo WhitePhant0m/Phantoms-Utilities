@@ -5,10 +5,10 @@ import appeng.api.parts.IPart;
 import appeng.api.parts.IPartItem;
 import appeng.api.parts.PartHelper;
 import appeng.api.util.AEColor;
+import appeng.blockentity.networking.CableBusBlockEntity;
 import dev.wp.phantoms_utilities.PUConfig;
 import dev.wp.phantoms_utilities.PUItems;
 import dev.wp.phantoms_utilities.PUSounds;
-import dev.wp.phantoms_utilities.PhantomsUtilities;
 import dev.wp.phantoms_utilities.Util.PUColor;
 import dev.wp.phantoms_utilities.Util.Utils;
 import dev.wp.phantoms_utilities.helpers.IMouseWheelItem;
@@ -36,34 +36,28 @@ import net.minecraft.world.level.block.state.properties.Property;
 import net.neoforged.api.distmarker.Dist;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.slf4j.Logger;
 
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.Queue;
-import java.util.Set;
+import java.util.*;
 
 public class SprayCan extends Item implements IMouseWheelItem {
-    static Logger logger = PhantomsUtilities.LOGGER;
-
     public SprayCan(Properties properties) {
-        super(properties);
+        super(properties.stacksTo(1));
     }
 
     private static void floodFillCables(Level level, BlockPos startPos, AEColor newColor, Direction side, Player player) {
         final int maxTotalChecks = PUConfig.maxTotalChecks;
-        int currTotalChecks = 0;
-
         final int maxBlocks = PUConfig.maxCableDyeCount;
-        int currBlocks = 0;
 
+        // Validate initial position
         if (!(PartHelper.getPart(level, startPos, null) instanceof IPart origPart)) return;
         IPartItem<?> originalCable = origPart.getPartItem();
 
         Queue<BlockPos> queue = new LinkedList<>();
         Set<BlockPos> visited = new HashSet<>();
-
         queue.add(startPos);
+
+        int currTotalChecks = 0;
+        int currBlocks = 0;
 
         while (!queue.isEmpty() && currTotalChecks < maxTotalChecks) {
             currTotalChecks++;
@@ -73,20 +67,14 @@ public class SprayCan extends Item implements IMouseWheelItem {
                 continue;
             visited.add(currentPos);
 
-            BlockEntity be = level.getBlockEntity(currentPos);
-            if (!(be instanceof IColorableBlockEntity cableBusBE)) continue;
-            if (!(PartHelper.getPart(level, currentPos, null) instanceof IPart part)) continue;
-            IPartItem<?> candidateCable = part.getPartItem();
-            if (candidateCable == null) continue;
-            if (candidateCable.equals(originalCable)) {
-                cableBusBE.recolourBlock(side, newColor, player);
-
+            if (processCablePos(level, currentPos, side, newColor, originalCable, player)) {
                 currBlocks++;
                 if (currBlocks >= maxBlocks) {
                     informPlayer(player, "Max dyeing limit (" + maxBlocks + ") reached, stopping.");
                     break;
                 }
 
+                // Add adjacent positions to the queue
                 for (Direction dir : Direction.values()) {
                     queue.add(currentPos.relative(dir));
                 }
@@ -94,17 +82,29 @@ public class SprayCan extends Item implements IMouseWheelItem {
         }
     }
 
+    private static boolean processCablePos(Level level, BlockPos pos, Direction side, AEColor newColor,
+                                           IPartItem<?> originalCable, Player player) {
+        BlockEntity be = level.getBlockEntity(pos);
+        if (!(be instanceof IColorableBlockEntity cableBusBE)) return false;
+        if (!(PartHelper.getPart(level, pos, null) instanceof IPart part)) return false;
+
+        IPartItem<?> candidateCable = part.getPartItem();
+        if (candidateCable == null || !candidateCable.equals(originalCable)) return false;
+
+        cableBusBE.recolourBlock(side, newColor, player);
+        return true;
+    }
+
     private static void floodFillBlocks(Level level, BlockPos startPos, BlockState originalState, BlockState newState, Player player) {
         final int maxTotalChecks = PUConfig.maxTotalChecks;
-        int currTotalChecks = 0;
-
         final int maxBlocks = PUConfig.maxBlockDyeCount;
-        int currBlocks = 0;
 
         Queue<BlockPos> queue = new LinkedList<>();
         Set<BlockPos> visited = new HashSet<>();
-
         queue.add(startPos);
+
+        int currTotalChecks = 0;
+        int currBlocks = 0;
 
         while (!queue.isEmpty() && currTotalChecks < maxTotalChecks) {
             currTotalChecks++;
@@ -115,21 +115,27 @@ public class SprayCan extends Item implements IMouseWheelItem {
                 continue;
             visited.add(currentPos);
 
-            BlockState newBlock = level.getBlockState(currentPos);
-            if (newBlock.equals(originalState)) {
-                level.setBlockAndUpdate(currentPos, newState);
-
+            if (processBlockPos(level, currentPos, originalState, newState)) {
                 currBlocks++;
                 if (currBlocks >= maxBlocks) {
                     informPlayer(player, "Max dyeing limit (" + maxBlocks + ") reached, stopping.");
                     break;
                 }
 
+                // Add adjacent positions to the queue
                 for (Direction dir : Direction.values()) {
                     queue.add(currentPos.relative(dir));
                 }
             }
         }
+    }
+
+    private static boolean processBlockPos(Level level, BlockPos pos, BlockState originalState, BlockState newState) {
+        BlockState currentState = level.getBlockState(pos);
+        if (!currentState.equals(originalState)) return false;
+
+        level.setBlockAndUpdate(pos, newState);
+        return true;
     }
 
     private static void playSound(Player player, BlockPos pos, SoundEvent sound, Level level) {
@@ -154,8 +160,8 @@ public class SprayCan extends Item implements IMouseWheelItem {
         ItemStack stack = ctx.getItemInHand();
         Direction side = ctx.getClickedFace();
 
-        if (Utils.isAE2Loaded && level.getBlockEntity(pos) instanceof IColorableBlockEntity cableBusBE)
-            return paintCables(level, pos, getActiveColor(stack), side, player, cableBusBE);
+        if (Utils.isAE2Loaded && level.getBlockEntity(pos) instanceof IColorableBlockEntity colorableBlock)
+            return paintCables(level, pos, getActiveColor(stack), side, player, colorableBlock);
         else return paintBlocks(level, pos, getActiveColor(stack), player);
     }
 
@@ -174,13 +180,14 @@ public class SprayCan extends Item implements IMouseWheelItem {
         return InteractionResult.PASS;
     }
 
-    private InteractionResult paintCables(Level level, BlockPos pos, PUColor color, Direction side, Player player, IColorableBlockEntity cableBusBE) {
+    private InteractionResult paintCables(Level level, BlockPos pos, PUColor color, Direction side, Player player, IColorableBlockEntity colorableBlock) {
         AEColor aeColor = getAEColor(color);
-        if (cableBusBE.getColor() == aeColor) return InteractionResult.FAIL;
+        if (colorableBlock.getColor() == aeColor) return InteractionResult.FAIL;
 
         if (!level.isClientSide()) {
-            if (player.isShiftKeyDown()) floodFillCables(level, pos, aeColor, side, player);
-            else cableBusBE.recolourBlock(side, aeColor, player);
+            if (player.isShiftKeyDown() && colorableBlock instanceof CableBusBlockEntity)
+                floodFillCables(level, pos, aeColor, side, player);
+            else colorableBlock.recolourBlock(side, aeColor, player);
         }
         playSound(player, pos, PUSounds.SPRAY_CAN_SPRAY, level);
         return InteractionResult.sidedSuccess(player.level().isClientSide());
@@ -190,6 +197,7 @@ public class SprayCan extends Item implements IMouseWheelItem {
         BlockState originalState = level.getBlockState(pos);
         ResourceLocation blockId = BuiltInRegistries.BLOCK.getKey(originalState.getBlock());
 
+        // TODO: Add support for clearing color from certain blocks. e.g. Stained Glass -> Glass
         if (color == PUColor.CLEAR) return InteractionResult.PASS;
         ResourceLocation toBeId = Utils.getRecoloredBlockID(blockId, color);
 

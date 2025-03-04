@@ -1,6 +1,9 @@
 package dev.wp.phantoms_utilities;
 
 import dev.wp.phantoms_utilities.Util.PUColor;
+//import dev.wp.phantoms_utilities.items.CurioEffects;
+//import dev.wp.phantoms_utilities.items.ItemCurio;
+//import dev.wp.phantoms_utilities.items.ItemCurioTicking;
 import dev.wp.phantoms_utilities.items.SprayCan;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.Registries;
@@ -21,7 +24,10 @@ public class PUItems {
     public static final DeferredRegister.DataComponents DATA_COMPONENTS = DeferredRegister.createDataComponents(Registries.DATA_COMPONENT_TYPE, PhantomsUtilities.ID);
 
     // Spray Can
-    public static final DeferredItem<SprayCan> SPRAY_CAN = ITEMS.register("spray_can", () -> new SprayCan(new Item.Properties().stacksTo(1)));
+    public static final DeferredItem<SprayCan> SPRAY_CAN = ITEMS.register("spray_can", () -> new SprayCan(new Item.Properties()));
+
+    // Curios
+//    public static final DeferredItem<ItemCurioTicking> SLEEP_CHARM = ITEMS.register("sleep_charm", () -> new ItemCurioTicking(CurioEffects::sleepCharmTick));
 
     // Components
     public static final DataComponentType<PUColor> SELECTED_COLOR = DataComponentType.<PUColor>builder().persistent(PUColor.CODEC).networkSynchronized(PUColor.STREAM_CODEC).build();
@@ -30,6 +36,7 @@ public class PUItems {
     public static void addCreative(BuildCreativeModeTabContentsEvent event) {
         if (event.getTabKey() == CreativeModeTabs.TOOLS_AND_UTILITIES) {
             event.accept(SPRAY_CAN);
+//            event.accept(SLEEP_CHARM);
         }
     }
 

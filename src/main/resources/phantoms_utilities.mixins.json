@@ -1,0 +1,13 @@
+{
+  "required": true,
+  "package": "dev.wp.phantoms_utilities.mixin",
+  "refmap": "mixins.phantoms_utilities.refmap.json",
+  "minVersion": "0.8",
+  "compatibilityLevel": "JAVA_21",
+  "mixins": [
+    "PlayerAccessor",
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

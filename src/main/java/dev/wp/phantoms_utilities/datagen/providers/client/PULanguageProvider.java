@@ -17,6 +17,7 @@ public final class PULanguageProvider extends LanguageProvider {
             add(color.toString(), color.getEnglishName());
         }
 
+//        add(PUItems.SLEEP_CHARM.get(), "Sleep Charm");
         add(PUItems.SPRAY_CAN.get(), "Spray Can");
         add("phantoms_utilities.configuration.items", "Item configs");
         add("phantoms_utilities.configuration.spray_can", "Spray Can");
