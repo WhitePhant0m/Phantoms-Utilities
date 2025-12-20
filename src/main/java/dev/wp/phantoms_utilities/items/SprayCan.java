@@ -6,8 +6,8 @@ import appeng.api.parts.IPartItem;
 import appeng.api.parts.PartHelper;
 import appeng.api.util.AEColor;
 import appeng.blockentity.networking.CableBusBlockEntity;
+import dev.wp.phantoms_utilities.PUComponents;
 import dev.wp.phantoms_utilities.PUConfig;
-import dev.wp.phantoms_utilities.PUItems;
 import dev.wp.phantoms_utilities.PUSounds;
 import dev.wp.phantoms_utilities.Util.PUColor;
 import dev.wp.phantoms_utilities.Util.Utils;
@@ -37,7 +37,10 @@ import net.neoforged.api.distmarker.Dist;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.Set;
 
 public class SprayCan extends Item implements IMouseWheelItem {
     public SprayCan(Properties properties) {
@@ -249,13 +252,13 @@ public class SprayCan extends Item implements IMouseWheelItem {
     }
 
     public PUColor getColor(ItemStack stack) {
-        var selectedColor = stack.get(PUItems.SELECTED_COLOR);
+        var selectedColor = stack.get(PUComponents.SELECTED_COLOR);
         if (selectedColor != null) return selectedColor;
         return PUColor.CLEAR;
     }
 
     private void setColor(ItemStack stack, @Nullable PUColor newColor) {
-        stack.set(PUItems.SELECTED_COLOR, newColor);
+        stack.set(PUComponents.SELECTED_COLOR, newColor);
     }
 
     @Override
@@ -270,7 +273,7 @@ public class SprayCan extends Item implements IMouseWheelItem {
 
     @Override
     public void onScroll(ItemStack stack, boolean up) {
-        this.cycleColors(stack, stack.get(PUItems.SELECTED_COLOR), up);
+        this.cycleColors(stack, stack.get(PUComponents.SELECTED_COLOR), up);
     }
 
     public void setActiveColor(ItemStack sprayCan, @Nullable PUColor color) {

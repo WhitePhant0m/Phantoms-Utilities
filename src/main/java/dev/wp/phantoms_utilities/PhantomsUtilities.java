@@ -28,11 +28,9 @@ public class PhantomsUtilities {
             if (event.getRegistryKey() == Registries.SOUND_EVENT) registerSounds();
         });
 
-        registerDataComponents();
-
         PUItems.ITEMS.register(bus);
         PUItems.CREATIVE_MODE_TABS.register(bus);
-        PUItems.DATA_COMPONENTS.register(bus);
+        PUComponents.init(bus);
     }
 
     public static ResourceLocation makeId(String id) {
@@ -41,10 +39,6 @@ public class PhantomsUtilities {
 
     private void registerSounds() {
         PUSounds.register(BuiltInRegistries.SOUND_EVENT);
-    }
-
-    private void registerDataComponents() {
-        PUItems.DATA_COMPONENTS.register("selected_color", () -> PUItems.SELECTED_COLOR);
     }
 
     private void commonSetup(final FMLCommonSetupEvent event) {

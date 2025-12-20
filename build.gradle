@@ -52,6 +52,12 @@ repositories {
         url "https://maven.saps.dev/releases"
         content {
             includeGroup "dev.latvian.mods"
+        }
+    }
+
+    maven {
+        url "https://maven.ftb.dev/releases"
+        content {
             includeGroup "dev.ftb.mods"
         }
     }
@@ -157,9 +163,6 @@ dependencies {
 
     runtimeOnly "curse.maven:glodium-957920:5821676"
     runtimeOnly "curse.maven:ex-pattern-provider-892005:6251183"
-
-//    runtimeOnly("top.theillusivec4.curios:curios-neoforge:${curios_version}")
-//    compileOnly("top.theillusivec4.curios:curios-neoforge:${curios_version}:api")
 }
 
 var generateModMetadata = tasks.register("generateModMetadata", ProcessResources) {
@@ -176,7 +179,6 @@ var generateModMetadata = tasks.register("generateModMetadata", ProcessResources
             mod_authors            : mod_authors,
             mod_description        : mod_description,
             ae2_version_range: ae2_version_range,
-            curios_version   : curios_version
     ]
     inputs.properties replaceProperties
     expand replaceProperties
