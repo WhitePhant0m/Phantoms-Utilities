@@ -27,12 +27,12 @@ public final class Utils {
     }
 
     public static ResourceLocation getRecoloredBlockID(ResourceLocation originalId, PUColor color) {
-        if (color == PUColor.CLEAR) return originalId;
+        if (color == PUColor.CLEAR) return getClearedBlockID(originalId);
 
         String namespace = originalId.getNamespace();
         String path = originalId.getPath();
 
-        Set<String> validColors = PUColor.VALID_COLORS.stream().map(validColor -> validColor.dye.toString()).collect(Collectors.toSet());
+        Set<String> validColors = PUColor.VALID_COLORS.stream().map(validColor -> validColor.registryPrefix).collect(Collectors.toSet());
 
         String colorPattern = validColors.stream().sorted((a, b) -> Integer.compare(b.length(), a.length())).collect(Collectors.joining("|"));
 
@@ -40,8 +40,32 @@ public final class Utils {
         Matcher matcher = pattern.matcher(path);
 
         if (matcher.find()) {
-            String updatedPath = matcher.replaceFirst(color.name().toLowerCase());
+            String updatedPath = matcher.replaceFirst(color.registryPrefix);
 
+            return ResourceLocation.fromNamespaceAndPath(namespace, updatedPath);
+        }
+
+        return originalId;
+    }
+
+    public static ResourceLocation getClearedBlockID(ResourceLocation originalId) {
+        String namespace = originalId.getNamespace();
+        String path = originalId.getPath();
+
+        Set<String> validColors = PUColor.VALID_COLORS.stream().map(validColor -> validColor.registryPrefix).collect(Collectors.toSet());
+        String colorPattern = validColors.stream().sorted((a, b) -> Integer.compare(b.length(), a.length())).collect(Collectors.joining("|"));
+
+        // Match color prefix or suffix with an optional underscore, and optional "stained"
+        // Pattern matches:
+        // 1. color_stained_
+        // 2. color_
+        // 3. _color
+        String regex = "((" + colorPattern + ")_stained_)|((" + colorPattern + ")_)|(_(" + colorPattern + "))";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(path);
+
+        if (matcher.find()) {
+            String updatedPath = matcher.replaceAll("");
             return ResourceLocation.fromNamespaceAndPath(namespace, updatedPath);
         }
 

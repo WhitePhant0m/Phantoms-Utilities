@@ -201,9 +201,6 @@ public class SprayCan extends Item implements IMouseWheelItem {
         BlockState originalState = level.getBlockState(pos);
         if (!isAllowedBlock(originalState)) return InteractionResult.FAIL;
         ResourceLocation blockId = BuiltInRegistries.BLOCK.getKey(originalState.getBlock());
-
-        // TODO: Add support for clearing color from certain blocks. e.g. Stained Glass -> Glass
-        if (color == PUColor.CLEAR) return InteractionResult.PASS;
         ResourceLocation toBeId = Utils.getRecoloredBlockID(blockId, color);
 
         if (blockId.equals(toBeId)) return InteractionResult.PASS;
@@ -221,8 +218,7 @@ public class SprayCan extends Item implements IMouseWheelItem {
             }
             playSound(player, pos, PUSounds.SPRAY_CAN_SPRAY, level);
             return InteractionResult.sidedSuccess(player.level().isClientSide());
-        } else {
-            informPlayer(player, "No block found with ID: " + toBeId);
+//        } else informPlayer(player, "No block found with ID: " + toBeId);
         }
         return InteractionResult.FAIL;
     }
