@@ -2,10 +2,10 @@ package dev.wp.phantoms_utilities.items;
 
 import appeng.api.implementations.blockentities.IColorableBlockEntity;
 import appeng.api.parts.IPart;
+import appeng.api.parts.IPartHost;
 import appeng.api.parts.IPartItem;
 import appeng.api.parts.PartHelper;
 import appeng.api.util.AEColor;
-import appeng.blockentity.networking.CableBusBlockEntity;
 import dev.wp.phantoms_utilities.PUComponents;
 import dev.wp.phantoms_utilities.PUConfig;
 import dev.wp.phantoms_utilities.PUSounds;
@@ -189,7 +189,7 @@ public class SprayCan extends Item implements IMouseWheelItem {
         if (colorableBlock.getColor() == aeColor) return InteractionResult.FAIL;
 
         if (!level.isClientSide()) {
-            if (player.isShiftKeyDown() && colorableBlock instanceof CableBusBlockEntity)
+            if (player.isShiftKeyDown() && colorableBlock instanceof IPartHost)
                 floodFillCables(level, pos, aeColor, side, player);
             else colorableBlock.recolourBlock(side, aeColor, player);
         }

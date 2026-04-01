@@ -19,6 +19,14 @@ repositories {
     maven {
         name "Modmaven"
         url "https://modmaven.dev"
+        content {
+            // GrandPower
+            includeGroup "dev.technici4n"
+            // Modern Industrialization
+            includeGroup "aztech"
+            // Tesseract
+            includeGroup "net.swedz"
+        }
     }
 
     maven {
@@ -153,16 +161,24 @@ configurations {
 }
 
 dependencies {
+    implementation "aztech:Modern-Industrialization:${modern_industrialization_version}"
+    implementation "dev.technici4n:GrandPower:${grandpower_version}"
+    implementation "me.shedaniel.cloth:cloth-config-neoforge:${cloth_config_version}"
+
+    compileOnly ("org.appliedenergistics:appliedenergistics2:${ae2_version}:api")
+    runtimeOnly ("org.appliedenergistics:appliedenergistics2:${ae2_version}")
+
+    runtimeOnly "net.swedz:tesseract-api-neoforge:${tesseract_version}-${minecraft_version}"
+    runtimeOnly "net.swedz:extended-industrialization:${extended_industrialization_version}-${minecraft_version}"
+
     runtimeOnly ("dev.emi:emi-neoforge:${emi_version}+${minecraft_version}")
     runtimeOnly ("dev.architectury:architectury-neoforge:${architectury_version}")
     runtimeOnly ("dev.ftb.mods:ftb-chunks-neoforge:${ftb_chunks_version}")
     runtimeOnly ("dev.latvian.mods:kubejs-neoforge:${kubejs_version}")
 
-    runtimeOnly ("org.appliedenergistics:appliedenergistics2:${ae2_version}")
-    compileOnly ("org.appliedenergistics:appliedenergistics2:${ae2_version}")
-
     runtimeOnly ("curse.maven:glodium-957920:5821676")
     runtimeOnly ("curse.maven:ex-pattern-provider-892005:6251183")
+    runtimeOnly ("curse.maven:jade-324717:5639932")
 }
 
 var generateModMetadata = tasks.register("generateModMetadata", ProcessResources) {
