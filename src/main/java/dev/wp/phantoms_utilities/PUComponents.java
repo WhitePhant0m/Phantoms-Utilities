@@ -10,10 +10,12 @@ import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
+import java.util.function.Supplier;
+
 public final class PUComponents {
     private static final DeferredRegister.DataComponents COMPONENTS = DeferredRegister.createDataComponents(Registries.DATA_COMPONENT_TYPE, PhantomsUtilities.ID);
 
-    public static final DataComponentType<PUColor> SELECTED_COLOR = DataComponentType.<PUColor>builder().persistent(PUColor.CODEC).networkSynchronized(PUColor.STREAM_CODEC).build();
+    public static final Supplier<DataComponentType<PUColor>> SELECTED_COLOR = create("selected_color", PUColor.CODEC, PUColor.STREAM_CODEC);
 
     public static void init(IEventBus bus) {
         COMPONENTS.register(bus);

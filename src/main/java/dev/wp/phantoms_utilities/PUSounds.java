@@ -5,8 +5,8 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 
 public final class PUSounds {
-    public static final ResourceLocation SPRAY_CAN_SPRAY_ID = PhantomsUtilities.makeId("spray_can.spray");
-    public static final ResourceLocation SPRAY_CAN_SHAKE_ID = PhantomsUtilities.makeId("spray_can.shake");
+    public static final ResourceLocation SPRAY_CAN_SPRAY_ID = PhantomsUtilities.id("spray_can.spray");
+    public static final ResourceLocation SPRAY_CAN_SHAKE_ID = PhantomsUtilities.id("spray_can.shake");
 
     public static SoundEvent SPRAY_CAN_SPRAY = SoundEvent.createVariableRangeEvent(SPRAY_CAN_SPRAY_ID);
     public static SoundEvent SPRAY_CAN_SHAKE = SoundEvent.createVariableRangeEvent(SPRAY_CAN_SHAKE_ID);

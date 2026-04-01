@@ -19,7 +19,7 @@ import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.network.PacketDistributor;
 
 @Mod(value = PhantomsUtilities.ID, dist = Dist.CLIENT)
-@EventBusSubscriber(value = Dist.CLIENT, modid = PhantomsUtilities.ID, bus = EventBusSubscriber.Bus.MOD)
+@EventBusSubscriber(value = Dist.CLIENT, modid = PhantomsUtilities.ID)
 public class PUClient {
 
     public PUClient(ModContainer container) {

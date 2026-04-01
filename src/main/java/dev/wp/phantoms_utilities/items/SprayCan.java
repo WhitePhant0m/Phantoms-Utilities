@@ -9,6 +9,7 @@ import appeng.blockentity.networking.CableBusBlockEntity;
 import dev.wp.phantoms_utilities.PUComponents;
 import dev.wp.phantoms_utilities.PUConfig;
 import dev.wp.phantoms_utilities.PUSounds;
+import dev.wp.phantoms_utilities.PUTags;
 import dev.wp.phantoms_utilities.Util.PUColor;
 import dev.wp.phantoms_utilities.Util.Utils;
 import dev.wp.phantoms_utilities.helpers.IMouseWheelItem;
@@ -198,6 +199,7 @@ public class SprayCan extends Item implements IMouseWheelItem {
 
     private InteractionResult paintBlocks(Level level, BlockPos pos, PUColor color, Player player) {
         BlockState originalState = level.getBlockState(pos);
+        if (!isAllowedBlock(originalState)) return InteractionResult.FAIL;
         ResourceLocation blockId = BuiltInRegistries.BLOCK.getKey(originalState.getBlock());
 
         // TODO: Add support for clearing color from certain blocks. e.g. Stained Glass -> Glass
@@ -288,5 +290,9 @@ public class SprayCan extends Item implements IMouseWheelItem {
                 return;
             }
         }
+    }
+
+    private boolean isAllowedBlock(BlockState blockState) {
+        return !blockState.getTags().toList().contains(PUTags.Blocks.SPRAY_CAN_BLACKLIST);
     }
 }

@@ -17,7 +17,6 @@ import java.util.stream.Collectors;
 
 public final class Utils {
     public final static boolean isAE2Loaded = isModLoaded("ae2");
-    public final static boolean isCuriosLoaded = isModLoaded("curios");
 
     public static boolean isModLoaded(String modId) {
         return ModList.get().isLoaded(modId);

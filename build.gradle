@@ -153,16 +153,16 @@ configurations {
 }
 
 dependencies {
-    runtimeOnly("dev.emi:emi-neoforge:${emi_version}")
-    runtimeOnly("dev.architectury:architectury-neoforge:${architectury_version}")
-    runtimeOnly("dev.ftb.mods:ftb-chunks-neoforge:${ftb_chunks_version}")
-    runtimeOnly("dev.latvian.mods:kubejs-neoforge:${kubejs_version}")
+    runtimeOnly ("dev.emi:emi-neoforge:${emi_version}+${minecraft_version}")
+    runtimeOnly ("dev.architectury:architectury-neoforge:${architectury_version}")
+    runtimeOnly ("dev.ftb.mods:ftb-chunks-neoforge:${ftb_chunks_version}")
+    runtimeOnly ("dev.latvian.mods:kubejs-neoforge:${kubejs_version}")
 
-    runtimeOnly("org.appliedenergistics:appliedenergistics2:${ae2_version}")
-    compileOnly("org.appliedenergistics:appliedenergistics2:${ae2_version}")
+    runtimeOnly ("org.appliedenergistics:appliedenergistics2:${ae2_version}")
+    compileOnly ("org.appliedenergistics:appliedenergistics2:${ae2_version}")
 
-    runtimeOnly "curse.maven:glodium-957920:5821676"
-    runtimeOnly "curse.maven:ex-pattern-provider-892005:6251183"
+    runtimeOnly ("curse.maven:glodium-957920:5821676")
+    runtimeOnly ("curse.maven:ex-pattern-provider-892005:6251183")
 }
 
 var generateModMetadata = tasks.register("generateModMetadata", ProcessResources) {

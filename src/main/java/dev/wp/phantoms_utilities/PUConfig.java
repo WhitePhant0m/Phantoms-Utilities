@@ -5,7 +5,7 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.event.config.ModConfigEvent;
 import net.neoforged.neoforge.common.ModConfigSpec;
 
-@EventBusSubscriber(modid = PhantomsUtilities.ID, bus = EventBusSubscriber.Bus.MOD)
+@EventBusSubscriber(modid = PhantomsUtilities.ID)
 public class PUConfig {
     public static final ModConfigSpec SPEC;
     private static final ModConfigSpec.Builder BUILDER;

@@ -13,7 +13,7 @@ import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
-@EventBusSubscriber(modid = PhantomsUtilities.ID, bus = EventBusSubscriber.Bus.MOD)
+@EventBusSubscriber(modid = PhantomsUtilities.ID)
 public class PUItems {
 
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(PhantomsUtilities.ID);

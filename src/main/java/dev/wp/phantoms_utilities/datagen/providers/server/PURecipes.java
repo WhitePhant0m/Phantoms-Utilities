@@ -9,8 +9,8 @@ import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
 
 
-public final class PURecipeProvider extends RecipeProvider {
-    public PURecipeProvider(GatherDataEvent event) {
+public final class PURecipes extends RecipeProvider {
+    public PURecipes(GatherDataEvent event) {
         super(event.getGenerator().getPackOutput(), event.getLookupProvider());
     }
 

@@ -33,7 +33,7 @@ public class PhantomsUtilities {
         PUComponents.init(bus);
     }
 
-    public static ResourceLocation makeId(String id) {
+    public static ResourceLocation id(String id) {
         return ResourceLocation.fromNamespaceAndPath(ID, id);
     }
 
