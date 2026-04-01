@@ -179,6 +179,9 @@ dependencies {
     runtimeOnly ("curse.maven:glodium-957920:5821676")
     runtimeOnly ("curse.maven:ex-pattern-provider-892005:6251183")
     runtimeOnly ("curse.maven:jade-324717:5639932")
+
+    runtimeOnly "curse.maven:xycraft-653786:6872525"
+    runtimeOnly "curse.maven:xycraft-world-653789:6872532"
 }
 
 var generateModMetadata = tasks.register("generateModMetadata", ProcessResources) {
