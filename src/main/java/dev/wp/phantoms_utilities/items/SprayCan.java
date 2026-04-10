@@ -19,6 +19,7 @@ import dev.wp.phantoms_utilities.PUConfig;
 import dev.wp.phantoms_utilities.PUSounds;
 import dev.wp.phantoms_utilities.PUTags;
 import dev.wp.phantoms_utilities.helpers.IMouseWheelItem;
+import dev.wp.phantoms_utilities.mixin.PipeBlockEntityAccessor;
 import dev.wp.phantoms_utilities.mixin.PipeNetworkNodeAccessor;
 import dev.wp.phantoms_utilities.util.PUColor;
 import dev.wp.phantoms_utilities.util.Utils;
@@ -274,7 +275,10 @@ public class SprayCan extends Item implements IMouseWheelItem {
         if (network != null) data = network.data.clone();
         else data = MIPipes.INSTANCE.getPipeItem(originalType).defaultData.clone();
 
-        pipeBE.removePipeAndDropContainedItems(originalType);
+        // Manual removal without dropping items
+        ((PipeBlockEntityAccessor) pipeBE).getPipes().remove(originalNode);
+        originalNode.getManager().removeNode(pos);
+
         pipeBE.addPipe(newType, data);
 
         for (PipeNetworkNode newNode : pipeBE.getNodes()) {
