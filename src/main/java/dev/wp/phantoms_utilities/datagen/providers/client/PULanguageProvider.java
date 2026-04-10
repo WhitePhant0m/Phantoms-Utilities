@@ -2,7 +2,7 @@ package dev.wp.phantoms_utilities.datagen.providers.client;
 
 import dev.wp.phantoms_utilities.PUItems;
 import dev.wp.phantoms_utilities.PhantomsUtilities;
-import dev.wp.phantoms_utilities.Util.PUColor;
+import dev.wp.phantoms_utilities.util.PUColor;
 import net.neoforged.neoforge.common.data.LanguageProvider;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
 

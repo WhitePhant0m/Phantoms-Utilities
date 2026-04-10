@@ -1,4 +1,4 @@
-package dev.wp.phantoms_utilities.Util;
+package dev.wp.phantoms_utilities.util;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
@@ -17,6 +17,7 @@ import java.util.stream.Collectors;
 
 public final class Utils {
     public final static boolean isAE2Loaded = isModLoaded("ae2");
+    public final static boolean isMILoaded = isModLoaded("modern_industrialization");
 
     public static boolean isModLoaded(String modId) {
         return ModList.get().isLoaded(modId);

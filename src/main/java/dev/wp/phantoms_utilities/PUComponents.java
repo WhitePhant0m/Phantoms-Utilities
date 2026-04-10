@@ -1,7 +1,7 @@
 package dev.wp.phantoms_utilities;
 
 import com.mojang.serialization.Codec;
-import dev.wp.phantoms_utilities.Util.PUColor;
+import dev.wp.phantoms_utilities.util.PUColor;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.RegistryFriendlyByteBuf;

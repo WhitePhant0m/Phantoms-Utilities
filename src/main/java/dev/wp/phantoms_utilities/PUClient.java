@@ -2,8 +2,8 @@ package dev.wp.phantoms_utilities;
 
 import appeng.api.implementations.blockentities.IColorableBlockEntity;
 import appeng.api.util.AEColor;
-import dev.wp.phantoms_utilities.Util.PUColor;
-import dev.wp.phantoms_utilities.Util.Utils;
+import dev.wp.phantoms_utilities.util.PUColor;
+import dev.wp.phantoms_utilities.util.Utils;
 import dev.wp.phantoms_utilities.client.gui.SprayCanColorScreen;
 import dev.wp.phantoms_utilities.helpers.IMouseWheelItem;
 import dev.wp.phantoms_utilities.items.SprayCan;

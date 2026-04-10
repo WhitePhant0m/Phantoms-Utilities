@@ -1,8 +1,6 @@
 package dev.wp.phantoms_utilities;
 
-import dev.wp.phantoms_utilities.Util.PUColor;
 import dev.wp.phantoms_utilities.items.SprayCan;
-import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.CreativeModeTabs;

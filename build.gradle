@@ -233,4 +233,5 @@ idea {
 
 tasks.jar {
     exclude("**/datagen/**")
+    exclude(".cache")
 }

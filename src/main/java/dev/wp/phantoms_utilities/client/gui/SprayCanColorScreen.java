@@ -1,6 +1,6 @@
 package dev.wp.phantoms_utilities.client.gui;
 
-import dev.wp.phantoms_utilities.Util.PUColor;
+import dev.wp.phantoms_utilities.util.PUColor;
 import dev.wp.phantoms_utilities.network.server.SprayCanColorSelectPacket;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;

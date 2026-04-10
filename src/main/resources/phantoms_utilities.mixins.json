@@ -3,7 +3,9 @@
   "package": "dev.wp.phantoms_utilities.mixin",
   "minVersion": "0.8",
   "compatibilityLevel": "JAVA_21",
-  "mixins": [],
+  "mixins": [
+    "PipeNetworkNodeAccessor"
+  ],
   "injectors": {
     "defaultRequire": 1
   }

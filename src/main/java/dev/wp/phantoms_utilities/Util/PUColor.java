@@ -1,4 +1,4 @@
-package dev.wp.phantoms_utilities.Util;
+package dev.wp.phantoms_utilities.util;
 
 import com.mojang.serialization.Codec;
 import net.minecraft.network.FriendlyByteBuf;
