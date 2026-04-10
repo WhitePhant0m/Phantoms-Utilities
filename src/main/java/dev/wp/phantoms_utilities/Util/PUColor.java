@@ -48,9 +48,7 @@ public enum PUColor implements StringRepresentable {
 
     public static PUColor fromDye(DyeColor vanillaDye) {
         for (var value : values()) {
-            if (value.dye == vanillaDye) {
-                return value;
-            }
+            if (value.dye == vanillaDye) return value;
         }
         throw new IllegalArgumentException("Unknown Vanilla dye: " + vanillaDye);
     }

@@ -23,5 +23,6 @@ public final class PULanguageProvider extends LanguageProvider {
         add("phantoms_utilities.configuration.spray_can.max_cable_dye_count", "Max Cable Dye Count");
         add("phantoms_utilities.configuration.spray_can.max_block_dye_count", "Max Block Dye Count");
         add("phantoms_utilities.configuration.spray_can.max_total_checks", "Max Total Checks");
+        add("gui.phantoms_utilities.spray_can_color.title", "Select Color");
     }
 }

@@ -199,7 +199,7 @@ public class SprayCan extends Item implements IMouseWheelItem {
 
     private InteractionResult paintBlocks(Level level, BlockPos pos, PUColor color, Player player) {
         BlockState originalState = level.getBlockState(pos);
-        if (!isAllowedBlock(originalState)) return InteractionResult.FAIL;
+        if (isBlacklisted(originalState)) return InteractionResult.FAIL;
         ResourceLocation blockId = BuiltInRegistries.BLOCK.getKey(originalState.getBlock());
         ResourceLocation toBeId = Utils.getRecoloredBlockID(blockId, color);
 
@@ -275,7 +275,7 @@ public class SprayCan extends Item implements IMouseWheelItem {
     }
 
     public void setActiveColor(ItemStack sprayCan, @Nullable PUColor color) {
-        if (color == null) {
+        if (color == null || color == PUColor.CLEAR) {
             setColor(sprayCan, PUColor.CLEAR);
             return;
         }
@@ -288,7 +288,7 @@ public class SprayCan extends Item implements IMouseWheelItem {
         }
     }
 
-    private boolean isAllowedBlock(BlockState blockState) {
-        return !blockState.getTags().toList().contains(PUTags.Blocks.SPRAY_CAN_BLACKLIST);
+    public static boolean isBlacklisted(BlockState blockState) {
+        return blockState.getTags().toList().contains(PUTags.Blocks.SPRAY_CAN_BLACKLIST);
     }
 }

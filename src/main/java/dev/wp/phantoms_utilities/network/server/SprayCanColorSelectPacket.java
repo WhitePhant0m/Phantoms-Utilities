@@ -21,9 +21,7 @@ public record SprayCanColorSelectPacket(@Nullable PUColor color) implements Serv
 
     public static SprayCanColorSelectPacket decode(RegistryFriendlyByteBuf stream) {
         PUColor color = null;
-        if (stream.readBoolean()) {
-            color = stream.readEnum(PUColor.class);
-        }
+        if (stream.readBoolean()) color = stream.readEnum(PUColor.class);
         return new SprayCanColorSelectPacket(color);
     }
 
