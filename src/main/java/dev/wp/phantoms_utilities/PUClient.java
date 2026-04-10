@@ -1,6 +1,7 @@
 package dev.wp.phantoms_utilities;
 
 import appeng.api.implementations.blockentities.IColorableBlockEntity;
+import appeng.api.util.AEColor;
 import dev.wp.phantoms_utilities.Util.PUColor;
 import dev.wp.phantoms_utilities.Util.Utils;
 import dev.wp.phantoms_utilities.client.gui.SprayCanColorScreen;
@@ -52,9 +53,10 @@ public class PUClient {
         if (player == null) return;
 
         if (player.getItemInHand(InteractionHand.MAIN_HAND).getItem() instanceof SprayCan) {
+            event.setCanceled(true);
+
             if (player.isShiftKeyDown()) {
                 mc.setScreen(new SprayCanColorScreen());
-                event.setCanceled(true);
                 return;
             }
 
@@ -69,10 +71,14 @@ public class PUClient {
                 if (Utils.isAE2Loaded) {
                     BlockEntity be = player.level().getBlockEntity(pos);
                     if (be instanceof IColorableBlockEntity colorable) {
+                        if (colorable.getColor().equals(AEColor.TRANSPARENT)) {
+                            PacketDistributor.sendToServer(new SprayCanColorSelectPacket(PUColor.CLEAR));
+                            return;
+                        }
+
                         for (PUColor color : PUColor.VALID_COLORS) {
                             if (color.name().equals(colorable.getColor().name())) {
                                 PacketDistributor.sendToServer(new SprayCanColorSelectPacket(color));
-                                event.setCanceled(true);
                                 return;
                             }
                         }
@@ -83,7 +89,6 @@ public class PUClient {
                 for (PUColor color : PUColor.VALID_COLORS) {
                     if (path.contains(color.registryPrefix)) {
                         PacketDistributor.sendToServer(new SprayCanColorSelectPacket(color));
-                        event.setCanceled(true);
                         return;
                     }
                 }
