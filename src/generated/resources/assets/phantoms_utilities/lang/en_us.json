@@ -22,5 +22,6 @@
   "phantoms_utilities.configuration.spray_can": "Spray Can",
   "phantoms_utilities.configuration.spray_can.max_block_dye_count": "Max Block Dye Count",
   "phantoms_utilities.configuration.spray_can.max_cable_dye_count": "Max Cable Dye Count",
-  "phantoms_utilities.configuration.spray_can.max_total_checks": "Max Total Checks"
+  "phantoms_utilities.configuration.spray_can.max_total_checks": "Max Total Checks",
+  "phantoms_utilities.configuration.spray_can.mod_blacklist": "Blacklisted Mods"
 }

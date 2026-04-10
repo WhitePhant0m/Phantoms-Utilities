@@ -196,7 +196,7 @@ public class SprayCan extends Item implements IMouseWheelItem {
 
     private InteractionResult paintMIPipes(Level level, BlockPos pos, PUColor color, BlockHitResult hit, Player player) {
         if (level.isClientSide) return InteractionResult.SUCCESS;
-        if (!(level.getBlockEntity(pos) instanceof PipeBlockEntity pipeBE)) return InteractionResult.FAIL;
+        if (!(level.getBlockEntity(pos) instanceof PipeBlockEntity)) return InteractionResult.FAIL;
 
         PipeVoxelShape hitPart = PipeBlock.getHitPart(level, pos, hit);
         if (hitPart == null) return InteractionResult.FAIL;
@@ -204,7 +204,7 @@ public class SprayCan extends Item implements IMouseWheelItem {
         PipeNetworkType type = hitPart.type;
         ResourceLocation typeId = type.getIdentifier();
 
-        // Ignore energy pipes (cables)
+        // Ignore cables, those don't have colors
         if (typeId.getPath().endsWith("_cable")) return InteractionResult.FAIL;
 
         ResourceLocation newTypeId = getRecoloredMIPipeID(typeId, color);
@@ -257,13 +257,10 @@ public class SprayCan extends Item implements IMouseWheelItem {
 
         PipeNetworkNode originalNode = null;
         for (PipeNetworkNode node : pipeBE.getNodes()) {
-            if (node.getType() == originalType) {
-                originalNode = node;
-            }
-            if (node.getType() == newType) {
-                // Already contains a pipe of the same color/type
-                return false;
-            }
+            if (node.getType() == originalType) originalNode = node;
+
+            // Already contains a pipe of the same color/type
+            if (node.getType() == newType) return false;
         }
         if (originalNode == null) return false;
 
@@ -272,20 +269,14 @@ public class SprayCan extends Item implements IMouseWheelItem {
         HolderLookup.Provider registries = level.registryAccess();
         originalNode.toTag(nodeTag, registries);
 
-        // Using mixin accessor to access protected network field in PipeNetworkNode
         PipeNetworkData data;
         PipeNetwork network = ((PipeNetworkNodeAccessor) originalNode).getNetwork();
-        if (network != null) {
-            data = network.data.clone();
-        } else {
-            // Fallback to default data if network is null
-            data = MIPipes.INSTANCE.getPipeItem(originalType).defaultData.clone();
-        }
+        if (network != null) data = network.data.clone();
+        else data = MIPipes.INSTANCE.getPipeItem(originalType).defaultData.clone();
 
         pipeBE.removePipeAndDropContainedItems(originalType);
         pipeBE.addPipe(newType, data);
 
-        // Restore node data to the new pipe
         for (PipeNetworkNode newNode : pipeBE.getNodes()) {
             if (newNode.getType() == newType) {
                 newNode.fromTag(nodeTag, registries);
@@ -293,11 +284,10 @@ public class SprayCan extends Item implements IMouseWheelItem {
             }
         }
 
-        // Notify neighbors to update their connections to this pipe
+        pipeBE.onConnectionsChanged();
+
         for (Direction dir : Direction.values()) {
-            if (level.getBlockEntity(pos.relative(dir)) instanceof PipeBlockEntity pipeBlock) {
-                level.neighborChanged(pos.relative(dir), level.getBlockState(pos).getBlock(), pos);
-            }
+            level.neighborChanged(pos.relative(dir), level.getBlockState(pos).getBlock(), pos);
         }
         return true;
     }
@@ -306,8 +296,6 @@ public class SprayCan extends Item implements IMouseWheelItem {
         String path = originalId.getPath();
         String namespace = originalId.getNamespace();
 
-        // MI pipe identifiers are like "white_item_pipe" or just "item_pipe" (for REGULAR)
-        // Let's strip any existing color prefix.
         for (PUColor c : PUColor.VALID_COLORS) {
             if (path.startsWith(c.registryPrefix + "_")) {
                 path = path.substring(c.registryPrefix.length() + 1);
@@ -315,11 +303,8 @@ public class SprayCan extends Item implements IMouseWheelItem {
             }
         }
 
-        if (color == PUColor.CLEAR) {
-            return ResourceLocation.fromNamespaceAndPath(namespace, path);
-        } else {
-            return ResourceLocation.fromNamespaceAndPath(namespace, color.registryPrefix + "_" + path);
-        }
+        if (color == PUColor.CLEAR) return ResourceLocation.fromNamespaceAndPath(namespace, path);
+        else return ResourceLocation.fromNamespaceAndPath(namespace, color.registryPrefix + "_" + path);
     }
 
     @NotNull
@@ -416,9 +401,8 @@ public class SprayCan extends Item implements IMouseWheelItem {
     public Component getName(ItemStack stack) {
         Component extra = Component.empty();
         final PUColor color = getActiveColor(stack);
-        if (color != null && Dist.CLIENT.isClient()) {
-            extra = Component.translatable(color.translationKey);
-        }
+        if (color != null && Dist.CLIENT.isClient()) extra = Component.translatable(color.translationKey);
+
         return super.getName(stack).copy().append(" - ").append(extra);
     }
 
@@ -442,6 +426,8 @@ public class SprayCan extends Item implements IMouseWheelItem {
     }
 
     public static boolean isBlacklisted(BlockState blockState) {
-        return blockState.getTags().toList().contains(PUTags.Blocks.SPRAY_CAN_BLACKLIST);
+        if (blockState.getTags().toList().contains(PUTags.Blocks.SPRAY_CAN_BLACKLIST)) return true;
+        var blockId = BuiltInRegistries.BLOCK.getKey(blockState.getBlock());
+        return PUConfig.blacklistedMods.contains(blockId.getNamespace());
     }
 }

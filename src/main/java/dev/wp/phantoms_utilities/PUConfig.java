@@ -5,6 +5,8 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.event.config.ModConfigEvent;
 import net.neoforged.neoforge.common.ModConfigSpec;
 
+import java.util.List;
+
 @EventBusSubscriber(modid = PhantomsUtilities.ID)
 public class PUConfig {
     public static final ModConfigSpec SPEC;
@@ -12,9 +14,11 @@ public class PUConfig {
     private static final ModConfigSpec.IntValue MAX_CABLE_DYE_COUNT;
     private static final ModConfigSpec.IntValue MAX_BLOCK_DYE_COUNT;
     private static final ModConfigSpec.IntValue MAX_TOTAL_CHECKS;
+    private static final ModConfigSpec.ConfigValue<List<? extends String>> BLACKLISTED_MODS;
     public static int maxCableDyeCount;
     public static int maxBlockDyeCount;
     public static int maxTotalChecks;
+    public static List<? extends String> blacklistedMods;
 
     static {
         BUILDER = new ModConfigSpec.Builder();
@@ -33,6 +37,10 @@ public class PUConfig {
                         "different from the maxBlockDyeCount and maxCableCount as this is the total amount of blocks/cables that can be checked for.")
                 .translation(configKey("spray_can.max_total_checks"))
                 .defineInRange("maxTotalChecks", 8192, 0, Integer.MAX_VALUE);
+        BLACKLISTED_MODS = BUILDER
+                .comment("Mods to blacklist from the spray can")
+                .translation(configKey("spray_can.mod_blacklist"))
+                .defineList("modBlacklist", List.of("spectrum", "pastel", "xycraft_world"), (o) -> true);
 
         SPEC = BUILDER.build();
     }
@@ -43,6 +51,7 @@ public class PUConfig {
         maxCableDyeCount = MAX_CABLE_DYE_COUNT.get();
         maxBlockDyeCount = MAX_BLOCK_DYE_COUNT.get();
         maxTotalChecks = MAX_TOTAL_CHECKS.get();
+        blacklistedMods = BLACKLISTED_MODS.get();
     }
 
     private static String configKey(String key) {
